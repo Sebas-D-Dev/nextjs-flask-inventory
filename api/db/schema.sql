@@ -1,62 +1,71 @@
--- Departments Table
-CREATE TABLE IF NOT EXISTS departments (
+-- Drop existing tables (if necessary)
+DROP TABLE IF EXISTS inventory_assignments;
+DROP TABLE IF EXISTS employees;
+DROP TABLE IF EXISTS devices;
+DROP TABLE IF EXISTS departments;
+
+-- Departments Table: Stores department details
+CREATE TABLE departments (
     department_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
+    department_name TEXT NOT NULL UNIQUE,
+    description TEXT
 );
 
--- Employees Table
-CREATE TABLE IF NOT EXISTS employees (
+-- Employees Table: Stores employee details
+CREATE TABLE employees (
     employee_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    department_id INTEGER NOT NULL,
-    FOREIGN KEY (department_id) REFERENCES departments(department_id)
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
+    department TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    phone TEXT
 );
 
--- Devices Table
-CREATE TABLE IF NOT EXISTS devices (
+-- Devices Table: Stores device details
+CREATE TABLE devices (
     device_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    description TEXT,
-    device_type TEXT NOT NULL
+    device_name TEXT NOT NULL,
+    device_type TEXT CHECK(device_type IN ('Laptop', 'Desktop', 'Tablet', 'Printer', 'Other')),
+    hardware_description TEXT,
+    purchase_date DATE,
+    serial_number TEXT UNIQUE NOT NULL
 );
 
--- Inventory Table
-CREATE TABLE IF NOT EXISTS inventory (
+-- Inventory Assignments Table: Tracks device assignments
+CREATE TABLE inventory_assignments (
     inventory_id INTEGER PRIMARY KEY AUTOINCREMENT,
     device_id INTEGER NOT NULL,
     employee_id INTEGER NOT NULL,
-    assigned_date DATE DEFAULT (DATE('now')),
-    status TEXT DEFAULT 'assigned',
+    assigned_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    status TEXT CHECK(status IN ('assigned', 'returned', 'maintenance', 'decommissioned')) NOT NULL,
     notes TEXT,
-    FOREIGN KEY (device_id) REFERENCES devices(device_id),
-    FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+
+    FOREIGN KEY(device_id) REFERENCES devices(device_id) ON DELETE CASCADE,
+    FOREIGN KEY(employee_id) REFERENCES employees(employee_id) ON DELETE SET NULL
 );
 
+-- Indexes for faster queries
+CREATE INDEX idx_employee_id ON employees(employee_id);
+CREATE INDEX idx_device_id ON devices(device_id);
+CREATE INDEX idx_inventory_device ON inventory_assignments(device_id);
+CREATE INDEX idx_inventory_employee ON inventory_assignments(employee_id);
 
--- Sample Data
-INSERT INTO departments (name) VALUES ('IT'), ('HR'), ('Finance');
-INSERT INTO employees (name, department_id) VALUES ('Alice Smith', 1), ('Bob Johnson', 2), ('Carol Lee', 1);
-INSERT INTO devices (name, description, device_type) VALUES
-  ('Dell Laptop', 'Latitude 5420, 16GB RAM', 'Computer'),
-  ('iPhone 13', 'Company mobile phone', 'Phone'),
-  ('HP LaserJet', 'Office printer', 'Printer');
-INSERT INTO inventory (device_id, employee_id, assigned_date, status, notes) VALUES
-  (1, 1, '2025-06-01', 'assigned', 'Primary work laptop'),
-  (2, 2, '2025-06-02', 'assigned', 'Personal work phone'),
-  (3, 3, '2025-06-03', 'assigned', 'Shared department printer');
-
-
-SELECT
-    e.name AS employee_name,
-    d.name AS device_name,
-    d.device_type,
-    d.description,
-    i.assigned_date,
-    i.status,
-    i.notes,
-    dep.name AS department_name
-FROM inventory i
-JOIN employees e ON i.employee_id = e.employee_id
-JOIN devices d ON i.device_id = d.device_id
-JOIN departments dep ON e.department_id = dep.department_id
-WHERE e.name = 'Alice Smith';
+-- Sample Data Insertion (optional)
+INSERT INTO departments (department_name, description) VALUES
+('IT', 'Information Technology Department'),
+('HR', 'Human Resources Department'),
+('Finance', 'Finance Department');
+INSERT INTO employees (first_name, last_name, department, email, phone) VALUES
+('John', 'Doe', 'IT', 'john.doe@example.com', '123-456-7890'),
+('Jane', 'Smith', 'HR', 'jane.smith@example.com', '987-654-3210'),
+('Alice', 'Johnson', 'Finance', 'alice.johnson@example.com', '555-123-4567');
+INSERT INTO devices (device_name, device_type, hardware_description, purchase_date, serial_number) VALUES
+('Dell XPS 13', 'Laptop', '13-inch ultrabook with Intel i7', '2023-01-15', 'SN123456789'),
+('HP LaserJet Pro', 'Printer', 'Laser printer with duplex printing', '2022-11-20', 'SN987654321'),
+('Apple iPad Pro', 'Tablet', '12.9-inch tablet with M1 chip', '2023-03-10', 'SN1122334455');
+INSERT INTO inventory_assignments (device_id, employee_id, assigned_date, status, notes) VALUES
+(1, 1, '2023-01-16', 'assigned', 'Assigned to John Doe'),
+(2, 2, '2022-11-21', 'assigned', 'Assigned to Jane Smith'),
+(3, 3, '2023-03-11', 'assigned', 'Assigned to Alice Johnson');
+-- Ensure foreign key constraints are enforced
+PRAGMA foreign_keys = ON;
