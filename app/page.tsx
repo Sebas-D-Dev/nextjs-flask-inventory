@@ -1,54 +1,67 @@
-import Link from "next/link";
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_BASE || "http://localhost:5328/api";
+
+export default function Login() {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    try {
+      const res = await fetch(`${API_BASE}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        router.push("/home");
+      } else {
+        setError(data.error || "Login failed");
+      }
+    } catch {
+      setError("Server error. Please try again.");
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {/* Logo and Title */}
-        <Image
-          src="/home-icon.png"
-          alt="Inventory Logo"
-          width={180}
-          height={36}
-          priority
+    <main className="flex min-h-screen items-center justify-center bg-gray-900">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded shadow-md w-full max-w-sm flex flex-col gap-4"
+      >
+        <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
+        {error && <div className="text-red-600 text-center">{error}</div>}
+        <input
+          type="text"
+          placeholder="Username"
+          className="border rounded px-3 py-2"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
         />
-      <h1 className="text-4xl text-white font-bold mb-6">IT Inventory Management</h1>
-      <p className="text-lg text-white mb-6">
-        Easily track and manage company devices, departments, and employees.
-      </p>
-
-      {/* Main Navigation Grid */}
-      <div className="grid grid-cols-2 gap-6 text-center lg:grid-cols-4">
-        <Link href="/dashboard" className="group rounded-lg border px-6 py-4 hover:bg-gray-200 transition">
-          <h2 className="text-2xl font-semibold text-white group-hover:text-black transition-colors">Dashboard →</h2>
-          <p className="text-sm text-white mt-2 group-hover:text-black transition-colors">System overview</p>
-        </Link>
-
-        <Link href="/departments" className="group rounded-lg border px-6 py-4 hover:bg-gray-200 transition">
-          <h2 className="text-2xl font-semibold text-white group-hover:text-black transition-colors">Departments →</h2>
-          <p className="text-sm text-white mt-2 group-hover:text-black transition-colors">Manage department records</p>
-        </Link>
-
-        <Link href="/employees" className="group rounded-lg border px-6 py-4 hover:bg-gray-200 transition">
-          <h2 className="text-2xl font-semibold text-white group-hover:text-black transition-colors">Employees →</h2>
-          <p className="text-sm text-white mt-2 group-hover:text-black transition-colors">Assign and track employees</p>
-        </Link>
-
-        <Link href="/devices" className="group rounded-lg border px-6 py-4 hover:bg-gray-200 transition">
-          <h2 className="text-2xl font-semibold text-white group-hover:text-black transition-colors">Devices →</h2>
-          <p className="text-sm text-white mt-2 group-hover:text-black transition-colors">Monitor available devices</p>
-        </Link>
-
-        <Link href="/inventory" className="group rounded-lg border px-6 py-4 hover:bg-gray-200 transition">
-          <h2 className="text-2xl font-semibold text-white group-hover:text-black transition-colors">Inventory →</h2>
-          <p className="text-sm text-white mt-2 group-hover:text-black transition-colors">View assigned inventory</p>
-        </Link>
-
-        <Link href="/inventory" className="group rounded-lg border px-6 py-4 hover:bg-gray-200 transition">
-          <h2 className="text-2xl font-semibold text-white group-hover:text-black transition-colors">Export →</h2>
-          <p className="text-sm text-white mt-2 group-hover:text-black transition-colors">Export inventory data</p>
-        </Link>
-      </div>
+        <input
+          type="password"
+          placeholder="Password"
+          className="border rounded px-3 py-2"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button
+          type="submit"
+          className="bg-blue-600 text-white rounded px-3 py-2 hover:bg-blue-700 transition"
+        >
+          Login
+        </button>
+      </form>
     </main>
   );
 }

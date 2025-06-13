@@ -1,17 +1,42 @@
 from flask import Flask
 from flask_cors import CORS
-from api.inventory_assignments.routes import inventory_bp
-from api.employees.routes import employee_bp
-from api.departments.routes import department_bp
+import os
+
+from api.routes.employee import employee_bp
+from api.routes.hardware import hardware_bp
+from api.routes.software import software_bp
+from api.routes.data import data_bp
+from api.routes.audio_video import audio_video_bp
+from api.routes.department import department_bp
+from api.routes.inventory_assignments import inventory_bp
+from api.routes.user import user_bp
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+app.secret_key = "your-very-secret-key"  # Use a strong, random value in production
 
-app.register_blueprint(department_bp)
+# Determine environment
+ENV = os.getenv("FLASK_ENV", "development")
+if ENV == "production":
+    # Only allow frontend domain in production
+    CORS(app, origins=["https://nextjs-flask-inventory.vercel.app"])
+else:
+    # Allow localhost and frontend domain in development
+    CORS(app, origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://nextjs-flask-inventory.vercel.app"
+    ])
+
 app.register_blueprint(employee_bp)
+app.register_blueprint(hardware_bp)
+app.register_blueprint(software_bp)
+app.register_blueprint(data_bp)
+app.register_blueprint(audio_video_bp)
+app.register_blueprint(department_bp)
 app.register_blueprint(inventory_bp)
+app.register_blueprint(user_bp)
 
 if __name__ == "__main__":
-    import os
     debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
-    app.run(debug=debug_mode, port=5328)  # Ensure correct port usage
+    port = int(os.getenv("FLASK_PORT", 5328))
+    app.run(debug=debug_mode, port=port)
