@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { getHardware, addHardware, updateHardware, deleteHardware } from '@/lib/api/hardware';
 import { useState, useEffect } from 'react';
-import HardwareModal from '@/components/hardware/modal';
+import HardwareModal from '@/components/hardware/Modal';
 import HardwareNav from '@/components/hardware/HardwareNav';
 
 // Define the Hardware interface to match the API response and modal expectations

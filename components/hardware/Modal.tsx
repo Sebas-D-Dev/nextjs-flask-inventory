@@ -20,7 +20,7 @@ interface HardwareData extends HardwareFormData {
 interface HardwareModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: HardwareFormData) => void;
   initialData?: HardwareData;
 }
 

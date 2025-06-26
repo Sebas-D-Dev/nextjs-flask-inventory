@@ -8,7 +8,7 @@ import {
   updateHardware,
   deleteHardware,
 } from "@/lib/api/hardware";
-import HardwareModal from "@/components/hardware/modal";
+import HardwareModal from "@/components/hardware/Modal";
 import HardwareNav from "@/components/hardware/HardwareNav";
 
 export default function AudioPage() {
