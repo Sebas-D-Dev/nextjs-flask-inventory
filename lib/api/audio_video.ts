@@ -31,3 +31,4 @@ export async function deleteAudioVideo(id: number) {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete audio/video");
+}

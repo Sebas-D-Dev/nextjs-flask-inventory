@@ -1,0 +1,107 @@
+/* Styling for the modal component */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 1.5rem; /* 24px */
+  border-radius: 0.5rem; /* 8px */
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  width: 100%;
+  max-width: 32rem; /* 512px */
+  margin: 1rem; /* 16px */
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb; /* gray-200 */
+  padding-bottom: 0.75rem; /* 12px */
+  margin-bottom: 1rem; /* 16px */
+}
+
+.modal-header h2 {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  color: #1f2937; /* gray-800 */
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280; /* gray-500 */
+}
+
+.modal-close-btn:hover {
+  color: #111827; /* gray-900 */
+}
+
+.modal-body .form-group {
+  margin-bottom: 1rem;
+}
+
+.modal-body .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: #374151; /* gray-700 */
+}
+
+.modal-body .form-group input,
+.modal-body .form-group select,
+.modal-body .form-group textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.375rem; /* rounded-md */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-body .form-group input:focus,
+.modal-body .form-group select:focus,
+.modal-body .form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb; /* blue-600 */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.modal-footer {
+  margin-top: 1.5rem; /* 24px */
+  padding-top: 1rem; /* 16px */
+  border-top: 1px solid #e5e7eb; /* gray-200 */
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem; /* 12px */
+}

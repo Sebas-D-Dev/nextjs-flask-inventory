@@ -1,0 +1,60 @@
+.hardware-nav-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem; /* 24px */
+}
+
+.hardware-nav-toggle {
+  background-color: #4a5568; /* gray-700 */
+  color: white;
+  padding: 0.5rem 1rem; /* 8px 16px */
+  border-radius: 0.375rem; /* rounded-md */
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.hardware-nav-toggle:hover {
+  background-color: #2d3748; /* gray-800 */
+}
+
+.hardware-nav-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #e2e8f0; /* gray-300 */
+  border-radius: 0.375rem; /* rounded-md */
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  z-index: 10;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.hardware-nav-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.hardware-nav-link {
+  display: block;
+  padding: 0.75rem 1rem; /* 12px 16px */
+  color: #2d3748; /* gray-800 */
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.hardware-nav-link:hover {
+  background-color: #f7fafc; /* gray-100 */
+}
+
+.hardware-nav-separator {
+  height: 1px;
+  background-color: #e2e8f0; /* gray-300 */
+  margin: 0.5rem 0; /* 8px 0 */
+}

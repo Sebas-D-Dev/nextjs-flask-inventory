@@ -15,3 +15,21 @@ export async function addHardware(data: { name: string; model: string }) {
   if (!res.ok) throw new Error("Failed to add hardware");
   return res.json();
 }
+
+export async function updateHardware(id: number, data: { name?: string; model?: string }) {
+  const res = await fetch(`${API_BASE}/hardware/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Failed to update hardware");
+  return res.json();
+}
+
+export async function deleteHardware(id: number) {
+  const res = await fetch(`${API_BASE}/hardware/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete hardware");
+  return res.json();
+}
