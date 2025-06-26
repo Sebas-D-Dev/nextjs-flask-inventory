@@ -1,0 +1,49 @@
+/* c:\Users\dange\Base\3-My Projects\nextjs-flask-inventory\nextjs-flask-inventory\components\hardware\HardwareNav.css */
+
+.hardware-nav-container {
+  margin-bottom: 1rem;
+}
+
+.hardware-nav-toggle {
+  background-color: #4a90e2; /* A shade of blue */
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.hardware-nav-toggle:hover {
+  background-color: #357ABD;
+}
+
+.hardware-nav-menu {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  background-color: #f0f0f0;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.hardware-nav-menu.open {
+  display: flex; /* Show when 'open' class is present */
+}
+
+.hardware-nav-link {
+  padding: 0.5rem 0.75rem;
+  color: #333;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.hardware-nav-link:hover {
+  background-color: #e0e0e0;
+}
+
+.hardware-nav-separator {
+  border-top: 1px solid #ccc;
+  margin: 0.5rem 0;
+}
