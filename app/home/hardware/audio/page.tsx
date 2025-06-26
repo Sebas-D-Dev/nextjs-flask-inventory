@@ -20,7 +20,7 @@ export default function AudioPage() {
     model: string;
     serialNumber: string;
     description: string;
-    type?: string; // e.g., 'computer', 'printer', 'audio_video'
+    type?: string;
   }
   const [audioItems, setAudioItems] = useState<HardwareItem[]>([]);
   const [loading, setLoading] = useState(true);
